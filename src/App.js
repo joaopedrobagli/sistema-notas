@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import './App.css';
 
 function App() {
   const [alunos, setAlunos] = useState([]);
   const [nome, setNome] = useState('');
   const [nota, setNota] = useState('');
   const [editandoId, setEditandoId] = useState(null);
+
 
   const adicionarAluno = () => {
     if (nome && nota) {
@@ -18,6 +20,7 @@ function App() {
       setNota('');
     }
   };
+
 
   const editarAluno = (id) => {
     const aluno = alunos.find(a => a.id === id);
@@ -39,95 +42,61 @@ function App() {
     }
   };
 
+  
   const excluirAluno = (id) => {
     setAlunos(alunos.filter(aluno => aluno.id !== id));
   };
 
-  const calcularMedia = () => {
-    if (alunos.length === 0) return 0;
-    const soma = alunos.reduce((total, aluno) => total + aluno.nota, 0);
-    return (soma / alunos.length).toFixed(1);
-  };
-
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <h1>Sistema de Notas</h1>
+    <div className="app">
+      <h1>CRUD de Notas</h1>
       
-      <div style={{ marginBottom: '20px' }}>
+      <div className="formulario">
+        <h3>Nome do aluno</h3>
         <input
           type="text"
-          placeholder="Nome do aluno"
+          placeholder="Informe o nome"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          style={{ width: '100%', padding: '8px', margin: '5px 0' }}
         />
+        
+        <h3>Informe a nota do aluno</h3>
         <input
           type="number"
-          placeholder="Nota (0-10)"
+          placeholder="0-10"
           value={nota}
           onChange={(e) => setNota(e.target.value)}
           min="0"
           max="10"
           step="0.1"
-          style={{ width: '100%', padding: '8px', margin: '5px 0' }}
         />
         
         {editandoId ? (
-          <button onClick={atualizarAluno} style={{ padding: '10px', margin: '5px' }}>
-            Atualizar
-          </button>
+          <button onClick={atualizarAluno}>Atualizar</button>
         ) : (
-          <button onClick={adicionarAluno} style={{ padding: '10px', margin: '5px' }}>
-            Adicionar Aluno
-          </button>
+          <button onClick={adicionarAluno}>Adicionar</button>
         )}
       </div>
 
-      <div style={{ textAlign: 'center', margin: '20px 0' }}>
-        <h3>Média da Turma: {calcularMedia()}</h3>
-      </div>
-
-      <div>
+      <div className="lista-alunos">
         {alunos.map(aluno => (
-          <div key={aluno.id} style={{ 
-            border: '1px solid #ddd', 
-            padding: '15px', 
-            margin: '10px 0',
-            borderRadius: '5px'
-          }}>
-            <div>
-              <h3 style={{ margin: '0 0 10px 0' }}>{aluno.nome}</h3>
-              <p>Nota: <strong>{aluno.nota}</strong></p>
-              <p style={{ 
-                color: aluno.nota >= 6 ? 'green' : 'red',
-                fontWeight: 'bold'
-              }}>
-                {aluno.nota >= 6 ? 'Aprovado' : 'Reprovado'}
+          <div key={aluno.id} className="aluno-card">
+            <div className="info-aluno">
+              <h3>{aluno.nome}</h3>
+              <p>Nota: {aluno.nota}</p>
+              <p className={aluno.nota >= 6 ? 'aprovado' : 'reprovado'}>
+                {aluno.nota >= 6 ? 'O aluno foi Aprovado' : 'O aluno foi Reprovado'}
               </p>
             </div>
-            <div>
-              <button 
-                onClick={() => editarAluno(aluno.id)}
-                style={{ margin: '5px', padding: '5px 10px' }}
-              >
-                Editar
-              </button>
-              <button 
-                onClick={() => excluirAluno(aluno.id)}
-                style={{ margin: '5px', padding: '5px 10px' }}
-              >
-                Excluir
-              </button>
+            <div className="acoes">
+              <button onClick={() => editarAluno(aluno.id)}>Editar</button>
+              <button onClick={() => excluirAluno(aluno.id)}>Excluir</button>
             </div>
           </div>
         ))}
       </div>
 
-      {alunos.length === 0 && (
-        <p style={{ textAlign: 'center', color: '#666' }}>
-          Nenhum aluno cadastrado
-        </p>
-      )}
+      {alunos.length === 0 && <p className="vazio">Nenhum aluno cadastrado</p>}
     </div>
   );
 }
