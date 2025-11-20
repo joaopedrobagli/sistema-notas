@@ -27,13 +27,13 @@ button {
   cursor: pointer;
 }
 
-.lista-alunos {
+.lista {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.aluno-card {
+.card-alu {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,7 +52,7 @@ button {
   font-weight: bold;
 }
 
-.acoes {
+.acao {
   display: flex;
   gap: 10px;
 }

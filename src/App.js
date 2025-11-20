@@ -8,7 +8,8 @@ function App() {
   const [editandoId, setEditandoId] = useState(null);
 
 
-  const adicionarAluno = () => {
+//cadastrando novo aluno
+  const adicionarNovoAluno = () => {
     if (nome && nota) {
       const novoAluno = {
         id: Date.now(),
@@ -21,7 +22,7 @@ function App() {
     }
   };
 
-
+//editando aluno
   const editarAluno = (id) => {
     const aluno = alunos.find(a => a.id === id);
     setNome(aluno.nome);
@@ -29,6 +30,7 @@ function App() {
     setEditandoId(id);
   };
 
+  //atualizando o aluno
   const atualizarAluno = () => {
     if (nome && nota) {
       setAlunos(alunos.map(aluno => 
@@ -42,14 +44,15 @@ function App() {
     }
   };
 
-  
+  //excluindo o aluno
   const excluirAluno = (id) => {
     setAlunos(alunos.filter(aluno => aluno.id !== id));
   };
 
+  
   return (
     <div className="app">
-      <h1>CRUD de Notas</h1>
+      <h1>Notas</h1>
       
       <div className="formulario">
         <h3>Nome do aluno</h3>
@@ -63,7 +66,7 @@ function App() {
         <h3>Informe a nota do aluno</h3>
         <input
           type="number"
-          placeholder="0-10"
+          placeholder="Informe a nota de 0 a 10"
           value={nota}
           onChange={(e) => setNota(e.target.value)}
           min="0"
@@ -74,21 +77,21 @@ function App() {
         {editandoId ? (
           <button onClick={atualizarAluno}>Atualizar</button>
         ) : (
-          <button onClick={adicionarAluno}>Adicionar</button>
+          <button onClick={adicionarNovoAluno}>Adicionar</button>
         )}
       </div>
 
-      <div className="lista-alunos">
+      <div className="lista">
         {alunos.map(aluno => (
-          <div key={aluno.id} className="aluno-card">
-            <div className="info-aluno">
+          <div key={aluno.id} className="card-alu">
+            <div className="info-alu">
               <h3>{aluno.nome}</h3>
               <p>Nota: {aluno.nota}</p>
-              <p className={aluno.nota >= 6 ? 'aprovado' : 'reprovado'}>
-                {aluno.nota >= 6 ? 'O aluno foi Aprovado' : 'O aluno foi Reprovado'}
+              <p className={aluno.nota >= 5 ? 'O aluno foi aprovado' : 'O aluno foi reprovado'}>
+                {aluno.nota >= 5 ? 'O aluno foi Aprovado' : 'O aluno foi Reprovado'}
               </p>
             </div>
-            <div className="acoes">
+            <div className="acao">
               <button onClick={() => editarAluno(aluno.id)}>Editar</button>
               <button onClick={() => excluirAluno(aluno.id)}>Excluir</button>
             </div>
@@ -96,7 +99,7 @@ function App() {
         ))}
       </div>
 
-      {alunos.length === 0 && <p className="vazio">Nenhum aluno cadastrado</p>}
+      
     </div>
   );
 }
